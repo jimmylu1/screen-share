@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
+import {Button} from '../styled-components/Styled_components.jsx';
 
-class App extends Component {
+export default class App extends Component {
   render() {
     return (
       <div>
-        Hello World
+        <div>
+          <h1>Share your screen :D</h1>
+          
+        </div>
+        <Button>Leave Room</Button>
+        <Button>Stop Sharing</Button>
       </div>
     );
   }
 }
 
-export default App;
