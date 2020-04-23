@@ -51,6 +51,7 @@ export default class Container extends Component {
       });
       //if disconnected, stop video, audio, screen share
       videoRoom.on("disconnected", () => {
+        //need to stop video, audio, screen => still need to implement
         this.stopVideoTrack();
         this.stopAudioTrack();
         this.stopScreenTrack();
