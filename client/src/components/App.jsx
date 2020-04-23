@@ -1,66 +1,56 @@
-import React, { Component, useState } from "react";
+import React, { Component, useState, useEffect, useRef } from "react";
 import { Button } from "../styled-components/Styled_components.jsx";
-import axios from "axios";
-import regeneratorRuntime from "regenerator-runtime";
+import StartForm from "./StartForm.jsx";
+import twilioVideo from "twilio-video";
 
-const StartForm = () => {
-  const [name, setName] = useState("");
-  const [room, setRoom] = useState("");
+const Video = ({ token }) => {
+  const localVidRef = useRef();
+  const remoteVidRef = useRef();
+  useEffect(() => {
+    twilioVideo
+      .connect(token, { video: true, audio: true, name: "test" })
+      .then(res => {
+        //attach local video
+        twilioVideo.createLocalVideoTrack().then(track => {
+          localVidRef.current.appendChild(track.attach());
+        });
+        console.log("successfully joined room");
+        console.log(res);
+        //attach remote video
+        res.participants.forEach(participant => {
+          participant.tracks.forEach(publication => {
+            if (publication.isSubscribed) {
+              const track = publication.track;
+              remoteVidRef.current.appendChild(track.attach());
+            }
+          });
+        });
+      });
+  }, [token]);
 
-  const handleSubmit = async e => {
-    e.preventDefault();
-    const res = await axios({
-      method: "POST",
-      url: "https://pistachio-markhor-9452.twil.io/generate-token",
-      data: {
-        identity: name
-      }
-    });
-    console.log(res);
-  };
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="name">
-        Display Name: <br />
-        <input
-          type="text"
-          id="name"
-          name="name"
-          value={name}
-          onChange={e => setName(e.target.value)}
-        />
-      </label>
-      <br />
-      <label htmlFor="room">
-        Room to Join: <br />
-        <input
-          type="text"
-          id="room"
-          name="room"
-          value={room}
-          onChange={e => setRoom(e.target.value)}
-        />
-      </label>
-      <br />
-      <button type="submit">Join Video Chat</button>
-    </form>
+    <div>
+      <div ref={localVidRef} />
+      <div ref={remoteVidRef} />
+    </div>
   );
 };
 
-export default class App extends Component {
-  render() {
-    return (
+const App = () => {
+  const [token, setToken] = useState(false);
+  return (
+    <div>
       <div>
-        <div>
-          <h1>Share your screen :D</h1>
-        </div>
-        <Button>Leave Room</Button>
-        <Button>Stop Sharing</Button>
-        <StartForm />
+        <h1>Share your screen :D</h1>
       </div>
-    );
-  }
-}
+      <Button>Leave Room</Button>
+      <Button>Stop Sharing</Button>
+      {!token ? <StartForm storeToken={setToken} /> : <Video token={token} />}
+    </div>
+  );
+};
+
+export default App;
 
 /*
 TO DO:
