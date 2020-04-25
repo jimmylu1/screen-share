@@ -2,7 +2,7 @@ const express = require("express");
 const twilio = require("twilio");
 const path = require("path");
 
-const PORT = 3000;
+const PORT = process.env.port || 3000;
 
 const app = express();
 app.use(express.static(path.join(__dirname, "../client/dist")));
