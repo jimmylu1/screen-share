@@ -7,6 +7,6 @@ node_modules
 bundle.js
 
 #access token
-server/config.js
+server/.env
 
 

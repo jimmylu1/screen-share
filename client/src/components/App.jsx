@@ -1,8 +1,9 @@
-import React, { Component, useState, useEffect, useRef } from "react";
+import React, {useState, useEffect, useRef } from "react";
 import { Button } from "../styled-components/Styled_components.jsx";
 import StartForm from "./StartForm.jsx";
 import twilioVideo from "twilio-video";
 
+//move to own component
 const Video = ({ token }) => {
   const localVidRef = useRef();
   const remoteVidRef = useRef();
