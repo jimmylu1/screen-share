@@ -9,6 +9,7 @@ const StartForm = ({ storeToken }) => {
   const handleSubmit = async e => {
     e.preventDefault();
     //add new user based on what was added in form
+    //get data for new user
     const res = await axios({
       method: "POST",
       url: "https://pistachio-markhor-9452.twil.io/generate-token",
