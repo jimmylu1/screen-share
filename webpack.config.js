@@ -4,10 +4,10 @@ var SRC_DIR = path.join(__dirname, '/client/src');
 var DIST_DIR = path.join(__dirname, '/client/dist');
 
 module.exports = {
-  mode: 'development',
+  mode: "development",
   entry: `${SRC_DIR}/index.jsx`,
   output: {
-    filename: 'bundle.js',
+    filename: "bundle.js",
     path: DIST_DIR
   },
   module: {
@@ -18,7 +18,10 @@ module.exports = {
         use: {
           loader: "babel-loader"
         }
-      } 
+      }
     ]
+  },
+  performance: {
+    hints: process.env.NODE_ENV === "production" ? "warning" : false
   }
 };
