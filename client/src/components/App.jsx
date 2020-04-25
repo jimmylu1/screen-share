@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button } from "../styled-components/Styled_components.jsx";
 import StartForm from "./StartForm.jsx";
 import twilioVideo from "twilio-video";
@@ -10,23 +10,29 @@ const Video = ({ token }) => {
   useEffect(() => {
     twilioVideo
       .connect(token, { video: true, audio: true, name: "test" })
-      .then(res => {
+      .then(room => {
         //attach local video
         twilioVideo.createLocalVideoTrack().then(track => {
           localVidRef.current.appendChild(track.attach());
         });
         console.log("successfully joined room");
-        console.log(res);
+        console.log(room);
+
+        const addParticipant = participant => {
+          console.log('participant connected', participant.identity)
+            participant.tracks.forEach(publication => {
+              if (publication.isSubscribed) {
+                const track = publication.track;
+                remoteVidRef.current.appendChild(track.attach());
+              }
+            });
+        };
+        
         //attach remote video
-        res.participants.forEach(participant => {
-          participant.tracks.forEach(publication => {
-            if (publication.isSubscribed) {
-              const track = publication.track;
-              remoteVidRef.current.appendChild(track.attach());
-            }
-          });
-        });
-      });
+        room.on("participantConnected", addParticipant)
+        room.participants.forEach(addParticipant) 
+        }
+      )
   }, [token]);
 
   return (
