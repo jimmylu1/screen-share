@@ -1,5 +1,4 @@
 const express = require("express");
-const twilio = require("twilio");
 const path = require("path");
 
 const PORT = process.env.port || 3000;
