@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import { Button } from "../styled-components/Styled_components.jsx";
 import StartForm from "./StartForm.jsx";
 import Video from './Video.jsx'
